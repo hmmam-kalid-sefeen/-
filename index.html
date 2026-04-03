@@ -9,15 +9,24 @@
             --primary-color: #2563eb;
             --secondary-color: #1e293b;
             --bg-color: #f8fafc;
+            --text-gray: #475569;
+        }
+
+        /* تحسين تجربة التمرير */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
         }
 
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
+            color: var(--secondary-color);
             line-height: 1.6;
         }
 
+        /* الهيدر */
         header {
             display: flex;
             justify-content: space-between;
@@ -37,11 +46,13 @@
             text-decoration: none;
             font-weight: 800;
             color: var(--primary-color);
+            font-size: 1.2rem;
         }
 
         .logo img {
             height: 45px;
             margin-left: 10px;
+            object-fit: contain;
         }
 
         /* القائمة المنسدلة */
@@ -58,6 +69,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-family: inherit;
         }
 
         .dropdown-content {
@@ -69,6 +81,7 @@
             right: 0;
             border-radius: 8px;
             z-index: 1;
+            overflow: hidden;
         }
 
         .dropdown-content a {
@@ -77,13 +90,19 @@
             text-decoration: none;
             display: block;
             text-align: right;
+            transition: 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
         }
 
         .dropdown:hover .dropdown-content {
             display: block;
         }
 
-        /* القسم الرئيسي */
+        /* القسم الرئيسي (صورة اليد والقلم) */
         .hero {
             display: flex;
             flex-direction: column;
@@ -95,12 +114,12 @@
                         url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1600&auto=format&fit=crop'); 
             background-size: cover;
             background-position: center;
-            min-height: 50vh;
+            min-height: 40vh;
             color: white;
         }
 
-        .hero h1 { font-size: 2.5rem; margin-bottom: 20px; }
-        .hero p { font-size: 1.2rem; max-width: 700px; margin-bottom: 30px; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 20px; color: white; }
+        .hero p { font-size: 1.2rem; max-width: 700px; margin-bottom: 30px; color: #eee; }
 
         .btn-primary {
             padding: 15px 35px;
@@ -109,23 +128,82 @@
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover { background-color: #1d4ed8; }
+
+        /* الأقسام العامة */
+        section.content-section {
+            padding: 80px 10%;
+            background: white;
+            margin: 20px auto;
+            max-width: 1000px;
+            border-radius: 15px;
+        }
+
+        section h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        section p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        /* نموذج الاتصال */
+        .contact-container {
+            background-color: #f1f5f9;
+            padding: 50px 5%;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            padding: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .contact-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .contact-form button:hover { background-color: #1d4ed8; }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-gray);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-<section id="about" class="content-section">
-    <h2>من نحن</h2>
-    <p>منصة التنافسية الأردنية هي المبادرة الرقمية الأولى...</p>
-</section>
-    <section id="contact" class="content-section">
-    <h2>اتصل بنا</h2>
-    <form class="contact-form">
-        </form>
-    </section>
+
     <header>
-        <a href="#" class="logo">
+        <a href="#home" class="logo">
             <img src="logo.png" alt="Logo">
-            امتحانات في الأردن 
+            امتحانات في الأردن
         </a>
         <div class="dropdown">
             <button class="dropbtn">القائمة ☰</button>
@@ -137,11 +215,37 @@
         </div>
     </header>
 
-    <section class="hero">
+    <section id="home" class="hero">
         <h1>تفوق في امتحاناتك التنافسية</h1>
-        <p>المنصة الأردنية الأحدث للتحضير للامتحانات التنافسية. تدرب عبر نماذج محاكية واقعية وبنك أسئلة متجدد.</p>
-        <a href="#" class="btn-primary">ابدأ تجربتك المجانية</a>
+        <p>المنصة الأردنية الأحدث للتحضير للامتحانات التنافسية. نماذج واقعية وبنك أسئلة متجدد يضمن لك التفوق.</p>
+        <a href="#about" class="btn-primary">اكتشف المزيد</a>
     </section>
+
+    <section id="about" class="content-section">
+        <h2>من نحن</h2>
+        <p>
+            نحن منصة "امتحانات في الأردن"، المبادرة الأولى المتخصصة في مساعدة الخريجين والمتقدمين للوظائف في تخطي عقبة الامتحانات التنافسية. نقدم محتوى تعليمياً وتدريبياً يحاكي تماماً أنماط الأسئلة المعتمدة في ديوان الخدمة المدنية والمؤسسات الحكومية والخاصة الكبرى في المملكة.
+        </p>
+        <p>
+            هدفنا هو توفير الوقت والجهد على الباحثين عن عمل من خلال تجميع أحدث الأسئلة وتقديمها في قالب تفاعلي يساعدهم على كسر حاجز الرهبة وتحقيق أعلى العلامات.
+        </p>
+    </section>
+
+    <section id="contact" class="contact-container">
+        <h2>اتصل بنا</h2>
+        <p style="text-align: center; margin-bottom: 30px;">هل لديك سؤال؟ أرسل لنا رسالة وسنقوم بالرد عليك في أقرب وقت.</p>
+        
+        <form action="https://formspree.io/f/mzdkjjyk" method="POST" class="contact-form">
+            <input type="text" name="name" placeholder="الاسم الكامل" required>
+            <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+            <textarea name="message" placeholder="اكتب رسالتك هنا..." required></textarea>
+            <button type="submit">إرسال الرسالة</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - امتحانات في الأردن</p>
+    </footer>
 
 </body>
 </html>
