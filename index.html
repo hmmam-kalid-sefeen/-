@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الامتحانات التنافسية | الرئيسية</title>
+    <title>منصة الامتحانات التنافسية بالأردن | بوابتك للنجاح</title>
     <style>
         :root {
             --primary-color: #2563eb; /* أزرق عصري */
-            --secondary-color: #1e293b; /* رمادي داكن للنصوص */
+            --secondary-color: #1e293b; /* رمادي داكن للنصوص الخارجية */
             --bg-color: #f8fafc;
         }
 
@@ -16,6 +16,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--secondary-color);
+            line-height: 1.6;
         }
 
         /* الهيدر واللوجو */
@@ -26,18 +27,23 @@
             padding: 1rem 5%;
             background: white;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            width: 90%;
+            z-index: 1000;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.6rem;
+            font-weight: 800;
             color: var(--primary-color);
             display: flex;
             align-items: center;
+            text-decoration: none;
         }
 
         .logo img {
-            height: 40px; /* مكان اللوجو الذي ستختاره */
+            height: 40px; /* مكان اللوجو */
             margin-left: 10px;
         }
 
@@ -48,84 +54,104 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 80px 5%;
-            background: linear-gradient(rgba(37, 99, 235, 0.1), rgba(255, 255, 255, 0)), 
-                        url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1000'); /* صورة معبرة مؤقتة عن الدراسة */
+            padding: 160px 5% 100px; /* مسافة إضافية للهيدر الثابت */
+            /* صورة خلفية معبرة عن النجاح والدراسة (Unsplash) */
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.5)), 
+                        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop'); 
             background-size: cover;
             background-position: center;
-            min-height: 50vh;
+            min-height: 70vh;
+            color: white; /* يجعل كل النصوص هنا بيضاء افتراضياً */
         }
 
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            color: white; /* لون العنوان أبيض */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* ظل خفيف للوضوح */
         }
 
+        /* --- هذا هو التعديل الذي طلبته للنص الذي حددته في الصورة --- */
         .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin-bottom: 2.5rem;
             line-height: 1.8;
-            color: #475569;
+            /* التعديلات الأساسية: */
+            color: white !important; /* لون الخط أبيض ناصع */
+            font-weight: 500; /* جعل الخط أكثر سماكة قليلاً */
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* ظل أسود خلف النص ليفصله عن الصورة */
         }
 
         .cta-buttons {
-            margin-top: 30px;
+            margin-top: 10px;
         }
 
         .btn-primary {
-            padding: 15px 35px;
+            display: inline-block;
+            padding: 18px 45px;
             background-color: var(--primary-color);
             color: white;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: 0.3s;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            border-radius: 50px; /* دائري الشكل */
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
         }
 
         .btn-primary:hover {
             background-color: #1d4ed8;
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
         }
 
-        /* قسم المميزات */
+        /* قسم المميزات (أسفل الصورة) */
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, min-minmax(250px, 1fr));
-            gap: 20px;
-            padding: 50px 5%;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 80px 5%;
             background: white;
         }
 
         .feature-card {
-            padding: 20px;
-            border-radius: 12px;
+            padding: 30px;
+            border-radius: 16px;
+            background: #f8fafc;
             border: 1px solid #e2e8f0;
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.03);
+            border-color: var(--primary-color);
         }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 1.8rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1.1rem; }
+            header { padding: 0.8rem 5%; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">
+        <a href="#" class="logo">
             <img src="https://via.placeholder.com/40" alt="Logo">
-            منصة التنافسية
-        </div>
+            منصة التنافسية الأردنية
+        </a>
         <nav>
-            <a href="#" style="text-decoration: none; color: var(--secondary-color);">دخول</a>
+            <a href="#" style="text-decoration: none; color: var(--secondary-color); font-weight: 600;">تسجيل دخول</a>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>مستقبلك يبدأ باختبار ناجح</h1>
-        <p>المنصة الأحدث في الأردن للتحضير للامتحانات التنافسية في القطاعين العام والخاص. نماذج محاكية، تقارير أداء، وبنك أسئلة متجدد.</p>
+        <h1>تفوق في امتحاناتك التنافسية</h1>
+        <p>المنصة الأردنية الأحدث للتحضير للامتحانات التنافسية في القطاعين العام والخاص. تدرب عبر نماذج محاكية واقعية، واحصل على تقارير أداء دقيقة وبنك أسئلة متجدد باستمرار.</p>
         
         <div class="cta-buttons">
             <a href="#" class="btn-primary">ابدأ تجربتك المجانية</a>
@@ -135,17 +161,17 @@
     <section class="features">
         <div class="feature-card">
             <h3>📈 محاكاة واقعية</h3>
-            <p>امتحانات بنفس نظام ونمط الامتحانات الحكومية والخاصة.</p>
+            <p>امتحانات بنفس نظام ونمط الامتحانات الحكومية والخاصة في الأردن.</p>
         </div>
         <div class="feature-card">
             <h3>📚 بنك أسئلة شامل</h3>
-            <p>آلاف الأسئلة في تخصصات الحاسوب، اللغة العربية، والمهارات الوظيفية.</p>
+            <p>آلاف الأسئلة المحدثة في تخصصات الإدارة، الحاسوب، واللغة العربية.</p>
         </div>
         <div class="feature-card">
-            <h3>📱 متوافق مع الهاتف</h3>
-            <p>تدرب في أي وقت ومن أي مكان عبر هاتفك المحمول.</p>
+            <h3>📱 متوافق تماماً</h3>
+            <p>تدرب من أي مكان ومن أي جهاز عبر منصتنا المتجاوبة.</p>
         </div>
     </section>
 
 </body>
-    </html>
+</html>
