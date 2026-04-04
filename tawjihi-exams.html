@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> [اسم القسم هنا] | امتحانات في الأردن</title>
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e293b; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); color: var(--secondary); }
+        header { background: white; padding: 15px 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .logo { text-decoration: none; font-weight: bold; color: var(--primary); }
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .header-box { text-align: center; margin-bottom: 40px; }
+        .badge { background: #dbeafe; color: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        
+        .exams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        
+        .exam-card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; transition: 0.3s; text-decoration: none; color: inherit; }
+        .exam-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: var(--primary); }
+        
+        .card-icon { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; background: #f1f5f9; }
+        .card-body { padding: 20px; }
+        .card-body h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: var(--secondary); }
+        .card-body p { margin: 0; font-size: 0.9rem; color: #64748b; line-height: 1.5; }
+        
+        .no-content { text-align: center; padding: 50px; color: #94a3b8; grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">امتحانات في الأردن</a>
+        <a href="index.html" style="text-decoration:none; color:#64748b;">الرئيسية ←</a>
+    </header>
+
+    <div class="container">
+        <div class="header-box">
+            <span class="badge">الأقسام التعليمية</span>
+            <h1 id="page-title"> [اسم القسم هنا] </h1>
+            <p>تصفح أحدث النماذج والملفات المضافة لهذا القسم</p>
+        </div>
+
+        <div class="exams-grid">
+            <div class="no-content">
+                <i>📭</i>
+                <p>قريباً.. سيتم إضافة الامتحانات والنماذج الخاصة بهذا القسم.</p>
+            </div>
+
+            </div>
+    </div>
+
+</body>
+</html>
