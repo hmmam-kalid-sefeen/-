@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان قاضي القضاة | امتحانات في الأردن</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e293b;
+            --bg: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--secondary);
+            line-height: 1.8;
+        }
+
+        /* الهيدر */
+        header {
+            background: white;
+            padding: 15px 5%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { text-decoration: none; font-weight: bold; color: var(--primary); font-size: 1.2rem; }
+
+        /* حاوية المقال */
+        .article-container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb { font-size: 0.9rem; color: #64748b; margin-bottom: 20px; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+
+        h1 { color: var(--secondary); font-size: 2rem; border-right: 5px solid var(--primary); padding-right: 15px; }
+
+        .meta-info { font-size: 0.85rem; color: #94a3b8; margin-bottom: 20px; display: flex; gap: 20px; }
+
+        .content { font-size: 1.1rem; color: #334155; }
+        
+        /* تنسيق جدول أو قائمة الأسئلة */
+        .exam-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .exam-link {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .exam-link:hover { background: #1d4ed8; }
+
+        footer { text-align: center; padding: 40px; color: #64748b; font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .article-container { margin: 10px; padding: 20px; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">امتحانات في الأردن</a>
+        <a href="index.html" style="text-decoration: none; color: #64748b;">الرئيسية ←</a>
+    </header>
+
+    <article class="article-container">
+        <div class="breadcrumb">
+            <a href="index.html">الرئيسية</a> / <a href="#">امتحانات تنافسية</a> / امتحان قاضي القضاة
+        </div>
+
+        <h1>تفاصيل امتحان قاضي القضاة التنافسي</h1>
+        
+        <div class="meta-info">
+            <span>📅 تاريخ النشر: 2026/04/04</span>
+            <span>⏱️ وقت القراءة: 3 دقائق</span>
+        </div>
+
+        <div class="content">
+            <p>يعتبر امتحان قاضي القضاة من أهم الامتحانات التنافسية في المملكة، حيث يركز على قياس الكفاءة القانونية والشرعية للمتقدمين.</p>
+            
+            <h3>محاور الامتحان الأساسية:</h3>
+            <ul>
+                <li>قانون الأحوال الشخصية الأردني.</li>
+                <li>أصول المحاكمات الشرعية.</li>
+                <li>الثقافة الإسلامية العامة واللغة العربية.</li>
+            </ul>
+
+            <div class="exam-box">
+                <h4>جاهز لبدء الاختبار التجريبي؟</h4>
+                <p>لقد قمنا بتجميع نماذج لأسئلة سنوات سابقة لمساعدتك على التحضير الجيد.</p>
+                <a href="#" class="exam-link">ابدأ الامتحان الآن</a>
+            </div>
+        </div>
+    </article>
+
+    <footer>
+        <p>&copy; 2026 امتحانات في الأردن - جميع الحقوق محفوظة</p>
+    </footer>
+
+</body>
+</html>
