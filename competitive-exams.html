@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحانات تنافسية | امتحانات في الأردن</title>
+    <style>
+        :root { --primary: #2563eb; --secondary: #1e293b; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--bg); }
+        
+        header { background: white; padding: 15px 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; }
+        .logo { text-decoration: none; font-weight: bold; color: var(--primary); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        h1 { color: var(--secondary); text-align: center; margin-bottom: 40px; }
+
+        /* نظام الشبكة للمقالات */
+        .exams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .exam-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .exam-item:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+
+        .exam-content { padding: 20px; }
+        .exam-content h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--secondary); }
+        .exam-content p { color: #64748b; font-size: 0.9rem; line-height: 1.5; }
+        .read-more { 
+            display: inline-block; margin-top: 15px; color: var(--primary); 
+            text-decoration: none; font-weight: bold; font-size: 0.95rem; 
+        }
+
+        .badge {
+            background: #dbeafe; color: var(--primary);
+            padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">امتحانات في الأردن</a>
+        <a href="index.html" style="text-decoration:none; color:#64748b;">الرئيسية ←</a>
+    </header>
+
+    <div class="container">
+        <span class="badge">قسم الامتحانات</span>
+        <h1>امتحانات تنافسية</h1>
+
+        <div class="exams-grid">
+            
+            <div class="exam-item">
+                <div style="background: #2563eb; height: 120px; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem;">⚖️</div>
+                <div class="exam-content">
+                    <h3>امتحان قاضي القضاة التنافسي</h3>
+                    <p>تعرف على المحاور الأساسية ونماذج الأسئلة المتوقعة لامتحان دائرة قاضي القضاة...</p>
+                    <a href="judge-exam.html" class="read-more">تصفح الامتحان الآن ←</a>
+                </div>
+            </div>
+
+            <div class="exam-item">
+                <div style="background: #10b981; height: 120px; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem;">💻</div>
+                <div class="exam-content">
+                    <h3>امتحان تكنولوجيا المعلومات</h3>
+                    <p>نماذج الامتحانات التنافسية لتخصصات البرمجة ونظم المعلومات في ديوان الخدمة...</p>
+                    <a href="#" class="read-more">قريباً ←</a>
+                </div>
+            </div>
+
+            </div>
+    </div>
+
+</body>
+</html>
