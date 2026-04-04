@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إمتحان كاتب ثالث - دائرة قاضي القضاة</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #34495e; --success: #27ae60; --error: #e74c3c; --accent: #8e44ad; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .quiz-container { 
+            background: white; width: 95%; max-width: 850px; padding: 30px; 
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            position: relative; transition: 0.3s; direction: rtl;
+        }
+
+        .quiz-container:fullscreen {
+            width: 100vw; max-width: 100vw; height: 100vh; border-radius: 0;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        #start-screen, #result-screen { text-align: center; width: 100%; }
+        .start-btn { 
+            background: var(--primary); color: white; border: none; padding: 18px 50px; 
+            border-radius: 50px; cursor: pointer; font-size: 1.4rem; font-weight: bold; transition: 0.3s;
+        }
+        .start-btn:hover { background: #1a252f; transform: scale(1.05); }
+
+        #quiz-ui { display: none; width: 100%; max-width: 750px; }
+        .header { border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 15px; text-align: center; }
+        
+        .timer-wrapper { width: 100%; height: 8px; background: #eee; border-radius: 4px; margin-top: 10px; overflow: hidden; }
+        #timer-fill { width: 100%; height: 100%; background: var(--accent); transition: width 0.1s linear; }
+
+        .question { font-size: 1.4rem; font-weight: bold; margin-bottom: 25px; color: var(--primary); text-align: right; line-height: 1.6; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .options { grid-template-columns: 1fr; } }
+
+        .option { 
+            padding: 18px; border: 2px solid #eceff1; border-radius: 10px; 
+            cursor: pointer; transition: 0.2s; background: #f8f9fa; text-align: right; font-size: 1.1rem;
+        }
+        .option:hover { border-color: #3498db; background: #f0f7ff; }
+        .option.correct { background: #d4edda !important; border-color: var(--success) !important; color: #155724; font-weight: bold; }
+        .option.wrong { background: #f8d7da !important; border-color: var(--error) !important; color: #721c24; }
+
+        .explanation-box { 
+            margin-top: 20px; padding: 15px; background: #fff3e0; border-radius: 8px; 
+            display: none; border-right: 5px solid #ff9800; text-align: right; font-size: 1rem; color: #e65100;
+        }
+
+        .footer { margin-top: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-next { background: var(--primary); color: white; border: none; padding: 12px 45px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; }
+        .btn-next:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container" id="main-container">
+    <div id="start-screen">
+        <div style="font-size: 4rem; margin-bottom: 10px;">⚖️</div>
+        <h1 style="color: var(--primary);">إمتحان تخصص كاتب ثالث</h1>
+        <p style="color: #666; margin-bottom: 35px;">المسابقة التنافسية لدائرة قاضي القضاة (30 سؤال)</p>
+        <button class="start-btn" onclick="goFullScreen()">ابدأ اختبار التخصص ▶</button>
+    </div>
+
+    <div id="quiz-ui">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--secondary);">
+                <span>السؤال <span id="current-q">1</span> من 30</span>
+                <span id="score-live">النتيجة: 0</span>
+            </div>
+            <div class="timer-wrapper">
+                <div id="timer-fill"></div>
+            </div>
+        </div>
+        
+        <div id="quiz-content">
+            <div class="question" id="q-text"></div>
+            <div id="options-box" class="options"></div>
+            <div id="explanation" class="explanation-box"></div>
+        </div>
+
+        <div class="footer">
+            <button class="btn-next" id="next-btn" onclick="nextQuestion()" disabled>السؤال التالي ⮕</button>
+        </div>
+    </div>
+
+    <div id="result-screen" style="display:none;">
+        <h2 style="color: var(--success);">تم إنهاء الاختبار بنجاح! 🎉</h2>
+        <div style="font-size: 4rem; color: var(--primary); margin: 20px 0;" id="final-score">0 / 30</div>
+        <p id="msg" style="font-size: 1.2rem; margin-bottom: 30px;"></p>
+        <button class="start-btn" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+</div>
+
+<script>
+function decodeHTMLEntities(text) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    return textArea.value;
+}
+
+const quizData = [
+    { q: "ما هو السن القانوني للزواج في الأردن للذكور والإناث كقاعدة عامة؟", a: ["15 سنة", "16 سنة", "18 سنة شمسية", "21 سنة"], c: 2, exp: "أتم قانون الأحوال الشخصية سن الثامنة عشرة شمسية للطرفين." },
+    { q: "أي من التالية يعتبر من 'المحرمات مؤقتاً' في الزواج؟", a: ["الأم", "الأخت من الرضاعة", "الجمع بين الأختين", "زوجة الأب"], c: 2, exp: "الجمع بين الأختين تحريم مؤقت يزول بزوال السبب (انفصال أو وفاة إحداهما)." },
+    { q: "ما المقصود بـ 'مهر المثل' في عقد الزواج؟", a: ["المهر المتفق عليه", "مهر مثيلات الزوجة من أسرتها", "المهر المؤجل فقط", "نصف المهر المسمى"], c: 1, exp: "هو مهر شبيهات الزوجة من جهة أبيها عند عدم تسمية مهر صحيح." },
+    { q: "تستحق الزوجة كامل المهر المسمى في حال:", a: ["الطلاق قبل الدخول", "الخلوة الصحيحة أو الدخول", "فسخ العقد قبل الدخول", "الردة قبل الدخول"], c: 1, exp: "يتأكد المهر كاملاً بالدخول أو بالخلوة الصحيحة أو بوفاة أحد الزوجين." },
+    { q: "الطلاق الرجعي هو الذي يملك فيه الزوج إعادة زوجته:", a: ["بعقد ومهر جديدين", "خلال فترة العدة دون عقد جديد", "بعد الزواج من زوج آخر", "برضا ولي أمرها فقط"], c: 1, exp: "للزوج حق الرجعة في العدة قولاً أو فعلاً دون الحاجة لعقد جديد." },
+    { q: "كم مدة عدة المتوفى عنها زوجها إذا لم تكن حاملاً؟", a: ["ثلاثة قروء", "ثلاثة أشهر", "أربعة أشهر وعشرة أيام", "سنة كاملة"], c: 2, exp: "بصريح النص القرآني والقانوني: أربعة أشهر وعشرة أيام بلياليها." },
+    { q: "ما هي أعلى سلطة قضائية شرعية في المملكة الأردنية الهاشمية؟", a: ["محكمة الاستئناف الشرعية", "المحكمة العليا الشرعية", "المحاكم الابتدائية", "دائرة الإفتاء"], c: 1, exp: "المحكمة العليا الشرعية هي قمة الهرم القضائي الشرعي." },
+    { q: "من هو الولي الأقرب لزواج الفتاة البكر العاقلة؟", a: ["الأخ الأكبر", "الجد لأم", "الأب", "الخال"], c: 2, exp: "الأب هو الولي الأول في ترتيب الأولياء." },
+    { q: "تجب النفقة للزوجة على زوجها من تاريخ:", a: ["الدخول بها فقط", "عقد الزواج الصحيح", "إنجاب الطفل الأول", "مطالبتها بها أمام القاضي"], c: 1, exp: "تستحق النفقة بالعقد الصحيح ما لم تكن نائرة (ممتنعة بغير حق)." },
+    { q: "الوصية الواجبة في القانون الأردني مقدارها لا يتجاوز:", i: "10", a: ["النصف", "الربع", "الثلث", "السدس"], c: 2, exp: "الوصية الواجبة لأولاد الابن أو البنت يجب ألا تتجاوز الثلث." },
+    { q: "في الميراث، ما هو نصيب الزوج عند وجود فرع وارث (أبناء)؟", a: ["النصف", "الربع", "الثمن", "السدس"], c: 1, exp: "ينزل نصيب الزوج من النصف إلى الربع في حال وجود أبناء للزوجة." },
+    { q: "أي من الحالات التالية تفسخ عقد الزواج فوراً؟", a: ["الخلاف والنزاع", "الردة عن الإسلام من أحد الزوجين", "عدم دفع النفقة", "سجن الزوج"], c: 1, exp: "الردة تعتبر سبباً من أسباب فسخ العقد الفوري لاختلال ركن الدين." },
+    { q: "من مهام 'الكاتب' في المحكمة الشرعية:", a: ["إصدار الحكم القضائي", "تحرير الضبوط والصكوك وتوثيقها", "تمثيل المتهمين", "الإفتاء في المسائل الشرعية"], c: 1, exp: "مهمة الكاتب الأساسية هي التدوين الرسمي والتوثيق وحفظ السجلات." },
+    { q: "ما المقصود بـ 'التخارج' في التركات؟", a: ["توزيع الإرث بالتساوي", "تصالح الورثة على ترك بعضهم نصيبه لآخر مقابل عوض", "حرمان أحد الورثة", "الخروج من البيت"], c: 1, exp: "هو عقد يصالح فيه وارث بقية الورثة على الخروج من الميراث مقابل شيء معلوم." },
+    { q: "إذا توفي شخص عن (زوجة وأب وأم)، كم نصيب الزوجة؟", a: ["الثمن", "الربع", "السدس", "الثلث"], c: 1, exp: "تأخذ الزوجة الربع لعدم وجود فرع وارث للمتوفى." },
+    { q: "يعتبر الزواج باطلاً إذا:", a: ["لم يتم دفع المهر", "كانت الزوجة محرماً على الزوج", "لم يوافق الأخ الأكبر", "لم تقم حفلة زفاف"], c: 1, exp: "مخالفة موانع الزواج المؤبدة تجعل العقد باطلاً بطلاناً مطلقاً." },
+    { q: "ما هي الجهة المسؤولة عن تنظيم شؤون الموظفين وترقيتهم في الدائرة؟", a: ["هيئة الخدمة والإدارة العامة", "وزارة العمل", "المحكمة العليا", "وزارة العدل"], c: 0, exp: "هيئة الخدمة (ديوان الخدمة سابقاً) هي المسؤولة عن النظام الوظيفي." },
+    { q: "تعتبر إجازة الأمومة للموظفة في القطاع العام الأردني مدتها:", a: ["60 يوماً", "90 يوماً متصلة", "70 يوماً", "45 يوماً"], c: 1, exp: "وفق نظام الخدمة المدنية هي 90 يوماً براتب كامل." },
+    { q: "ما معنى 'الحجب' في علم الفرائض؟", a: ["المنع من الميراث بوجود شخص آخر", "زيادة نصيب الوارث", "تقليل المهر", "تأجيل تقسيم التركة"], c: 0, exp: "الحجب هو حرمان وارث من كل ميراثه أو بعضه بوجود وارث آخر أقرب." },
+    { q: "متى يحق للزوجة طلب الفسخ بسبب 'العلة'؟", a: ["إذا كانت العلة موجودة قبل العقد ولم تعلم بها", "إذا كانت العلة بسيطة", "بعد عشر سنوات", "لا يحق لها الفسخ بالعلة"], c: 0, exp: "يحق لها الطلب إذا وجدت عيباً يحول دون الهدف من الزواج ولم تكن تعلم به." },
+    { q: "ما هو الإجراء المتبع عند فقدان سجل قضائي؟", a: ["تجاهل الأمر", "تشكيل لجنة تحقيق وإبلاغ المسؤولين فوراً", "كتابة سجل جديد من الذاكرة", "إغلاق المحكمة"], c: 1, exp: "السجلات وثائق رسمية سيادية يتطلب فقدانها إجراءات قانونية وإدارية مشددة." },
+    { q: "نصيب الأم من تركة ابنها عند وجود أبناء للمتوفى هو:", a: ["الثلث", "السدس", "الربع", "النصف"], c: 1, exp: "وجود الفرع الوارث يحجب الأم حجب نقصان من الثلث إلى السدس." },
+    { q: "ما هي 'العدة' للمطلقة قبل الدخول؟", a: ["شهر واحد", "ثلاثة قروء", "لا عدة لها", "ثلاثة أشهر"], c: 2, exp: "المطلقة قبل الدخول والخلوة لا تجب عليها عدة لعدم وجود احتمال للحمل." },
+    { q: "عقد الزواج الذي لا يحضره شهود يعتبر:", a: ["صحيحاً", "فاسداً", "باطلاً", "موقوفاً"], c: 1, exp: "الشهادة شرط صحة، وفقدانها يجعل العقد فاسداً في القانون الأردني." },
+    { q: "من هو المسؤول عن توقيع 'حجة العزوبية'؟", a: ["الكاتب فقط", "القاضي الشرعي", "المختار", "المحامي"], c: 1, exp: "الحجج الشرعية تصدر بتوقيع القاضي وختم المحكمة بعد استكمال البينات." },
+    { q: "ما هو الحد الأعلى لعدد الزوجات الذي يسمح به القانون الأردني؟", a: ["زوجة واحدة", "زوجتان", "أربع زوجات", "ثلاث زوجات"], c: 2, exp: "يتماشى القانون مع الشريعة الإسلامية بحد أقصى أربع زوجات بشروط." },
+    { q: "عقوبة الموظف العام الذي يفشي أسرار العمل هي:", a: ["تنبيه شفوي", "عقوبات تأديبية قد تصل للفصل", "زيادة ساعات العمل", "لا يوجد عقوبة"], c: 1, exp: "إفشاء الأسرار الوظيفية مخالفة جسيمة تستوجب إجراءات تأديبية قانونية." },
+    { q: "ما المقصود بـ 'الخلع' في القانون؟", a: ["طلاق الزوج لزوجته بإرادته", "افتداء الزوجة نفسها بعوض مالي للتحلل من العقد", "وفاة الزوج", "فسخ القاضي للزواج للضرر"], c: 1, exp: "الخلع هو فراق بعوض تبذله الزوجة لإنهاء الرابطة الزوجية." },
+    { q: "في حال غياب القاضي، من يحل محله لتسيير الأمور الإدارية العاجلة؟", a: ["أقدم الكتبة", "القاضي المنتدب أو من يكلفه قاضي القضاة", "المحامي", "مدير السير"], c: 1, exp: "يتم الانتداب بقرار رسمي من سماحة قاضي القضاة." },
+    { q: "ما هي لغة المراسلات الرسمية في دائرة قاضي القضاة؟", a: ["الإنجليزية", "العربية", "حسب رغبة الكاتب", "العربية والإنجليزية معاً"], c: 1, exp: "اللغة العربية هي اللغة الرسمية الوحيدة لكافة المعاملات والضبوط القضائية." }
+];
+
+let currentIdx = 0, score = 0, timerInterval, canAnswer = true;
+
+function goFullScreen() {
+    const elem = document.getElementById("main-container");
+    if (elem.requestFullscreen) elem.requestFullscreen();
+    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('quiz-ui').style.display = 'block';
+    loadQuestion();
+}
+
+function loadQuestion() {
+    canAnswer = true;
+    const q = quizData[currentIdx];
+    document.getElementById('current-q').innerText = currentIdx + 1;
+    document.getElementById('q-text').innerText = decodeHTMLEntities(q.q);
+    document.getElementById('explanation').style.display = "none";
+    document.getElementById('next-btn').disabled = true;
+
+    const optionsBox = document.getElementById('options-box');
+    optionsBox.innerHTML = '';
+    q.a.forEach((opt, i) => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerText = decodeHTMLEntities(opt);
+        div.onclick = () => { if(canAnswer) checkAnswer(i, div); };
+        optionsBox.appendChild(div);
+    });
+    startTimer();
+}
+
+function startTimer() {
+    clearInterval(timerInterval);
+    let width = 100;
+    const fill = document.getElementById('timer-fill');
+    timerInterval = setInterval(() => {
+        width -= 0.35;
+        fill.style.width = width + '%';
+        if(width <= 0) {
+            clearInterval(timerInterval);
+            checkAnswer(-1, null);
+        }
+    }, 100);
+}
+
+function checkAnswer(idx, el) {
+    canAnswer = false;
+    clearInterval(timerInterval);
+    const q = quizData[currentIdx];
+    const options = document.querySelectorAll('.option');
+    
+    if(idx === q.c) {
+        if(el) el.classList.add('correct');
+        score++;
+    } else {
+        if(el) el.classList.add('wrong');
+        options[q.c].classList.add('correct');
+    }
+    
+    document.getElementById('score-live').innerText = "النتيجة: " + score;
+    document.getElementById('explanation').innerHTML = `<strong>💡 التوضيح القانوني:</strong> ${decodeHTMLEntities(q.exp)}`;
+    document.getElementById('explanation').style.display = "block";
+    document.getElementById('next-btn').disabled = false;
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if(currentIdx < quizData.length) {
+        loadQuestion();
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        showFinalResult();
+    }
+}
+
+function showFinalResult() {
+    document.getElementById('quiz-ui').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('final-score').innerText = `${score} / 30`;
+    let message = score >= 20 ? "ممتاز! أنت ملم بالأنظمة والقوانين الشرعية." : "تحتاج لمزيد من الدراسة في قانون الأحوال الشخصية والأنظمة الإدارية.";
+    document.getElementById('msg').innerText = message;
+}
+</script>
+</body>
+  </html>
